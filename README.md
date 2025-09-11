@@ -23,3 +23,9 @@ Doorsign Client for LilyGo T5-S3 EPaper
 |USB Mode |	CDC and JTAG|
 
 its from https://github.com/Xinyuan-LilyGO/LilyGo-EPD47/tree/esp32s3
+
+# EEPROM Things
+| Address | Data |
+|---------|------|
+|000-019|SSID |
+|020-512| Password|
