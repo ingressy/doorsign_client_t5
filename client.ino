@@ -11,7 +11,9 @@ const int crcadd = 500;
 
 //ssid and password for wifi
 String ssid = "";
+const String ssidfallback = "";
 String password = "";
+const String passwordfallback = "";
 
 uint16_t sum = 0;
 uint8_t crcwifi;
@@ -36,7 +38,7 @@ void connectwifi() {
 
   Serial.println("Connecting to WiFi Network ...");
 
-  //wait antill wifi is connected 
+  //wait until wifi is connected 
   while(WiFi.status() != WL_CONNECTED) {
     Serial.print(".");
     delay(100);
@@ -58,12 +60,28 @@ void readEEPROM() {
     Serial.println("Found SSID Data in EEPROM ...");
   } else {
     Serial.println("Didnt find SSID Data in EEPROM!");
+    //fallback 
+    if (ssidfallback != "") {
+      ssid = ssidfallback;
+      Serial.println("Found SSID Fallback");
+    } else {
+      Serial.println("Didnt find SSID Data! Restart ...");
+      ESP.restart();
+    }
   }
   if (EEPROM.read(passadd) != 0xFF) {
     password = EEPROM.readString(passadd);
     Serial.println("Found Password Data in EEPROM ...");
   } else {
     Serial.println("Didnt find Password Data in EEPROM!");
+    //fallback 
+    if (passwordfallback != "") {
+      password = passwordfallback;
+      Serial.println("Found Password Fallback");
+    } else {
+      Serial.println("Didnt find Password Data! Restart ...");
+      ESP.restart();
+    }
   }
   Serial.println("Read CRC ...");
   if (EEPROM.read(crcadd) != 0xFF) {
@@ -82,6 +100,20 @@ void readEEPROM() {
 
   if (calc != crcwifi) {
     Serial.println("EEPROM CRC ERROR | Try again!");
+    if (ssidfallback != "") {
+      password = ssidfallback;
+      Serial.println("Found SSID Fallback");
+    } else {
+      Serial.println("Didnt find SSID Data! Restart ...");
+      ESP.restart();
+    }
+    if (passwordfallback != "") {
+      password = passwordfallback;
+      Serial.println("Found Password Fallback");
+    } else {
+      Serial.println("Didnt find Password Data! Restart ...");
+      ESP.restart();
+    }
   } else {
     Serial.println("CRC Check finished ...");
   }
