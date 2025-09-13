@@ -28,5 +28,6 @@ its from https://github.com/Xinyuan-LilyGO/LilyGo-EPD47/tree/esp32s3
 | Address | Data |
 |---------|------|
 |000-019|SSID |
-|020-499| Password|
+|020-049| Password|
+|050-499| Room|
 |500-512|WiFi CRC|
