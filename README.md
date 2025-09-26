@@ -1,5 +1,7 @@
 # doorsign_client_t5
 Doorsign Client for LilyGo T5-S3 EPaper
+## Will only work with src and Waveform_header folder from https://github.com/Xinyuan-LilyGO/LilyGo-EPD47/tree/esp32s3
+
 
 # Imported Settings for Arduino IDE
 | Arduino IDE Setting  | Value |
@@ -28,5 +30,6 @@ its from https://github.com/Xinyuan-LilyGO/LilyGo-EPD47/tree/esp32s3
 | Address | Data |
 |---------|------|
 |000-019|SSID |
-|020-499| Password|
+|020-049| Password|
+|050-499| Room|
 |500-512|WiFi CRC|
