@@ -7,26 +7,28 @@
 //512 Byte | one letter a Byte
 static int EEPROM_SIZE = 512;
 //EEPROM info | NAMEadd = address | NAMEdata = data || address equals letter  || COUNT LETTERS!!!
-static int ssidadd = 0, passadd = 20, crcadd = 500;
+static int ssidadd = 0, passadd = 20, idadd= 50, roomadd = 55, crcadd = 500;
+String ssid = "", password = "";
+int id = -1;
+
 
 void readEEPROM() {
+  //ssid and password for wifi
+  //String ssid = "", password = "";
+  static String ssidfallback = "", passwordfallback = "";
 
-    //ssid and password for wifi
-    String ssid = "", password = "";
-    static String ssidfallback = "", passwordfallback = "";
+  uint16_t sum = 0;
+  uint8_t crcwifi;
 
-    uint16_t sum = 0;
-    uint8_t crcwifi;
+  Serial.println("Begin to read EEPROM ...");
 
-    Serial.println("Begin to read EEPROM ...");
-
-    EEPROM.begin(EEPROM_SIZE);
+  EEPROM.begin(EEPROM_SIZE);
 
 //check if EEPROM Address is initialized || didnt check corruption
   if (EEPROM.read(ssidadd) != 0xFF) {
     ssid = EEPROM.readString(ssidadd);
     Serial.println("Found SSID Data in EEPROM ...");
-    Serial.println(ssid);
+    //Serial.println(ssid);
   } else {
     Serial.println("Didnt find SSID Data in EEPROM!");
     //fallback 
@@ -40,7 +42,7 @@ void readEEPROM() {
   if (EEPROM.read(passadd) != 0xFF) {
     password = EEPROM.readString(passadd);
     Serial.println("Found Password Data in EEPROM ...");
-    Serial.println(password);
+    //Serial.println(password);
   } else {
     Serial.println("Didnt find Password Data in EEPROM!");
     //fallback 
@@ -50,6 +52,12 @@ void readEEPROM() {
     } else {
       Serial.println("Didnt find Password Data!");
     }
+  }
+    if (EEPROM.read(idadd) != 0xFF) {
+    id = EEPROM.readInt(idadd);
+    Serial.println("Found Device ID in EEPROM ...");
+  } else {
+    Serial.println("Didnt find Device ID in EEPROM!");
   }
   Serial.println("Read CRC ...");
   if (EEPROM.read(crcadd) != 0xFF) {
@@ -86,4 +94,15 @@ void readEEPROM() {
   }
 
   Serial.println("End read EEPROM ...");
+}
+
+bool readRoom() {
+  if (EEPROM.read(roomadd) != 0xFF) {
+    ssid = EEPROM.readDouble(roomadd);
+    Serial.println("Found Room Number in EEPROM ...");
+    return true;
+  } else {
+    Serial.println("Didnt find Room Number in EEPROM!");
+    return false;
+  }
 }
