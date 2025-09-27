@@ -2,13 +2,13 @@
 
 #include "epd_driver.h"
 #include "utilities.h"
-#include "firasans.h"
 
 #include <header.h>
 
 int battery = -1;
 bool readroom = false;
 uint8_t *framebuffer;
+
 
 void setup() {
     //begin things
